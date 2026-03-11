@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CartaOS — The Operating System for Biotech Partnerships</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0C0F1A;--surface:#141825;--card:rgba(255,255,255,0.03);--border:rgba(255,255,255,0.08);--accent:#F59E0B;--accent2:#F97316;--coral:#FB7185;--teal:#2DD4BF;--sky:#38BDF8;--violet:#A78BFA;--text:#F8FAFC;--text2:#E2E8F0;--muted:#CBD5E1;--dim:#94A3B8;--dark:#64748B}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.w{max-width:1060px;margin:0 auto;padding:0 24px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+
+/* Nav */
+nav{padding:20px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(12,15,26,.85);z-index:100;backdrop-filter:blur(16px)}
+nav .w{display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'DM Mono',monospace;font-weight:500;font-size:18px;color:var(--text);letter-spacing:.04em}.logo span{color:var(--accent)}
+.nav-cta{padding:8px 20px;border-radius:8px;background:var(--accent);color:#0C0F1A;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}.nav-cta:hover{opacity:.9;transform:translateY(-1px);text-decoration:none}
+
+/* Hero */
+.hero{padding:100px 0 80px;text-align:center;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(245,158,11,.06),transparent)}
+.hero-tag{font-family:'DM Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.hero h1{font-size:clamp(32px,5.5vw,54px);font-weight:700;line-height:1.12;letter-spacing:-.03em;margin-bottom:24px;max-width:860px;margin-left:auto;margin-right:auto}
+.hero h1 .dim{color:var(--dim)}
+.hero-sub{font-size:clamp(16px,2vw,19px);color:var(--muted);line-height:1.7;max-width:680px;margin:0 auto 40px}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;align-items:center}
+.bp{padding:14px 32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0F1A;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;box-shadow:0 4px 20px rgba(245,158,11,.25)}.bp:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(245,158,11,.35);text-decoration:none}
+
+/* Rolling text */
+.roller-wrap{display:inline-block;position:relative}
+.roller{display:inline-flex;flex-direction:column;overflow:hidden;height:1.2em;vertical-align:bottom}
+.roller-track{display:flex;flex-direction:column;animation:rollUp 9s ease-in-out infinite}
+.roller-track .roller-item{height:1.2em;line-height:1.2;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800}
+@keyframes rollUp{0%,25%{transform:translateY(0)}33.3%,58.3%{transform:translateY(-1.2em)}66.6%,91.6%{transform:translateY(-2.4em)}100%{transform:translateY(0)}}
+
+/* Section shared */
+.st{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+.section-title{font-size:clamp(24px,3.5vw,34px);font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.section-sub{font-size:16px;color:var(--muted);line-height:1.7;max-width:680px;margin-bottom:36px}
+
+/* Network — compact, dynamic */
+.network-section{padding:40px 0 50px}
+.network-canvas{position:relative;width:100%;max-width:480px;margin:0 auto;aspect-ratio:1/1}
+.network-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:5px;z-index:2;transition:transform .3s}
+.network-node:hover{transform:scale(1.12)!important}
+.node-circle{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:2.5px solid;transition:box-shadow .3s}
+.network-node:hover .node-circle{box-shadow:0 0 28px rgba(255,255,255,.2)}
+.node-label{font-size:13px;font-weight:700;color:var(--text);text-align:center;max-width:120px;line-height:1.3}
+.node-desc{font-size:11px;font-weight:400;text-align:center;max-width:120px;line-height:1.3;opacity:.85}
+.patient-node{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3}
+.patient-node .node-circle{width:90px;height:90px;font-size:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:3px solid var(--accent);box-shadow:0 0 50px rgba(245,158,11,.35);animation:patientPulse 3s ease-in-out infinite}
+.patient-node .node-label{font-size:14px;font-weight:700;color:var(--accent)}
+@keyframes patientPulse{0%,100%{box-shadow:0 0 40px rgba(245,158,11,.3)}50%{box-shadow:0 0 60px rgba(245,158,11,.5)}}
+.network-lines{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+.network-lines line{stroke-width:1.5;stroke-dasharray:6 4}
+.line-main{animation:flowToCenter 3s linear infinite}
+.line-peer{animation:flowPeer 4s linear infinite}
+@keyframes flowToCenter{to{stroke-dashoffset:-80}}
+@keyframes flowPeer{to{stroke-dashoffset:-120}}
+
+/* Problem */
+.problem{padding:80px 0}
+.problem h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.03em;margin-bottom:16px;line-height:1.2}
+.problem h2 .highlight{background:linear-gradient(135deg,var(--coral),#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.prob-text{font-size:17px;color:var(--muted);line-height:1.8;margin-top:12px;max-width:720px}
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+@media(max-width:700px){.prob-grid{grid-template-columns:1fr}}
+.prob-old{background:linear-gradient(135deg,rgba(251,113,133,.06),rgba(251,113,133,.02));border:1px solid rgba(251,113,133,.12);border-radius:16px;padding:32px}
+.prob-old h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:20px}
+.prob-item{display:flex;gap:12px;align-items:baseline;margin-bottom:14px}
+.prob-item span{flex-shrink:0;font-size:14px}
+.prob-item p{font-size:15px;color:var(--muted);line-height:1.65}
+.prob-new{background:linear-gradient(135deg,rgba(45,212,191,.06),rgba(45,212,191,.02));border:1px solid rgba(45,212,191,.12);border-radius:16px;padding:32px}
+.prob-new h3{font-size:18px;font-weight:700;color:var(--text);margin-bottom:20px}
+.sol-item{display:flex;gap:12px;align-items:baseline;margin-bottom:14px}
+.sol-item span{flex-shrink:0;font-size:14px;color:var(--teal)}
+.sol-item p{font-size:15px;color:var(--muted);line-height:1.65}
+
+/* Deal Twin — hero-style merged section */
+.deal-twin{padding:100px 0 80px;border-top:1px solid var(--border);background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(245,158,11,.08),transparent)}
+.deal-twin .st{font-size:14px;letter-spacing:.14em}
+.deal-twin h2{font-size:clamp(30px,5vw,50px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin-bottom:20px;max-width:800px}
+.deal-twin h2 .accent-text{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.deal-twin-sub{font-size:clamp(16px,2vw,19px);color:var(--muted);line-height:1.7;max-width:700px;margin-bottom:40px}
+.deal-twin-cta{padding:16px 36px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0F1A;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .25s;box-shadow:0 6px 30px rgba(245,158,11,.3);display:inline-block}
+.deal-twin-cta:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(245,158,11,.45);text-decoration:none}
+
+/* Capabilities */
+.capabilities{padding:60px 0 80px}
+.cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:600px){.cap-grid{grid-template-columns:1fr}}
+.cap-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:all .35s cubic-bezier(.16,1,.3,1)}
+.cap-card:hover{transform:scale(1.015)}
+.cap-card.active{transform:scale(1.02)}
+.cap-icon{font-size:24px;margin-bottom:8px;transition:filter .3s}
+.cap-card.active .cap-icon{filter:drop-shadow(0 0 10px currentColor)}
+.cap-sub{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.cap-name{font-weight:700;font-size:16px;color:var(--text)}
+.cap-desc{font-size:14px;color:var(--dim);line-height:1.5}
+.cap-detail{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;margin-top:16px;transition:border-color .3s}
+.cap-detail-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.cap-detail-icon{font-size:32px}
+.cap-detail-name{font-size:20px;font-weight:700;color:var(--text)}
+.cap-detail-sub{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.cap-detail-text{font-size:15px;color:var(--text2);line-height:1.8}
+
+/* Founder */
+.founder{padding:80px 0;border-top:1px solid var(--border)}
+.fi{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
+@media(max-width:700px){.fi{grid-template-columns:1fr;text-align:center}.fp{margin:0 auto}}
+.fp{width:150px;height:150px;border-radius:50%;overflow:hidden;flex-shrink:0;border:3px solid rgba(245,158,11,.3);box-shadow:0 0 40px rgba(245,158,11,.1)}
+.fp img{width:100%;height:100%;object-fit:cover}
+.fq{font-size:clamp(18px,2.5vw,24px);font-weight:500;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:20px;letter-spacing:-.01em}
+.founder-statement{font-size:clamp(26px,4vw,42px);font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;letter-spacing:-.02em;line-height:1.15}
+
+/* Vision */
+.vision{padding:80px 0;text-align:center;border-top:1px solid var(--border);background:radial-gradient(ellipse 60% 40% at 50% 100%,rgba(245,158,11,.04),transparent)}
+.vision h2{font-size:clamp(22px,3.5vw,32px);font-weight:700;letter-spacing:-.02em;margin-bottom:16px;max-width:700px;margin-left:auto;margin-right:auto}
+.vision p{font-size:17px;color:var(--muted);line-height:1.8;max-width:600px;margin:0 auto 32px}
+
+/* Footer */
+footer{padding:40px 0;border-top:1px solid var(--border);text-align:center}
+footer p{font-size:12px;color:var(--dim);font-family:'DM Mono',monospace;line-height:1.6}
+
+/* Demo Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;max-width:440px;width:90%;position:relative}
+.modal h3{font-size:22px;font-weight:700;margin-bottom:6px}
+.modal p{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.modal label{font-size:13px;font-weight:600;color:var(--text2);display:block;margin-bottom:6px}
+.modal input{width:100%;padding:12px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:15px;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:16px;outline:none;transition:border-color .2s}
+.modal input:focus{border-color:var(--accent)}
+.modal button.submit-btn{width:100%;padding:14px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#0C0F1A;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.modal button.submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,.3)}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--dim);font-size:24px;cursor:pointer;transition:color .2s}.modal-close:hover{color:var(--text)}
+.success-msg{display:none;text-align:center;padding:20px 0}
+.success-msg .check{font-size:48px;margin-bottom:12px}
+.success-msg h4{font-size:18px;font-weight:700;margin-bottom:8px}
+.success-msg p{font-size:14px;color:var(--muted)}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<nav><div class="w">
+  <div class="logo"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:8px"><circle cx="14" cy="14" r="13" stroke="url(#lg)" stroke-width="2.5" fill="none"/><path d="M18.5 9.5C17.2 8.2 15.7 7.5 14 7.5C10.4 7.5 7.5 10.4 7.5 14C7.5 17.6 10.4 20.5 14 20.5C15.7 20.5 17.2 19.8 18.5 18.5" stroke="url(#lg)" stroke-width="2.5" stroke-linecap="round"/><defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#F59E0B"/><stop offset="1" stop-color="#F97316"/></linearGradient></defs></svg>Carta<span>OS</span></div>
+  <a href="#" onclick="openModal();return false" class="nav-cta">Request a Demo</a>
+</div></nav>
+
+<!-- HERO -->
+<section class="hero"><div class="w">
+  <div class="hero-tag">The Operating System for Biotech Partnerships</div>
+  <h1>Science discovers therapies. Partnerships turn these scientific discoveries into<br><span class="roller-wrap"><span class="roller"><span class="roller-track"><span class="roller-item">medicines.</span><span class="roller-item">patient hopes.</span><span class="roller-item">millions of lives saved.</span></span></span></span></h1>
+  <p class="hero-sub">Most new medicines reach patients through partnerships — licensing agreements, co-development deals, strategic collaborations, and acquisitions. Yet there is no operating system for these transactions. CartaOS is building it.</p>
+  <div class="hero-ctas">
+    <a href="#" onclick="openModal();return false" class="bp">Request a Demo &#8594;</a>
+  </div>
+</div></section>
+
+<!-- STAKEHOLDER NETWORK -->
+<section class="network-section"><div class="w">
+  <div class="network-canvas" id="networkCanvas">
+    <svg class="network-lines" id="networkLines"></svg>
+    <div class="patient-node">
+      <div class="node-circle">&#9829;</div>
+      <div class="node-label">Patient</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- PROBLEM -->
+<section class="problem"><div class="w">
+  <div class="st" style="color:var(--coral)">The Problem</div>
+  <h2>No operating system for the most important transactions in <span class="highlight">medicine.</span></h2>
+  <p class="prob-text">These organizations collaborate through licensing agreements, co-development partnerships, and acquisitions — the mechanism through which scientific discovery becomes medicine. Yet the system governing these partnerships is still extremely primitive. The information asymmetry between large pharma and emerging biotech is massive — and it costs the industry billions in undervalued deals, collapsed negotiations, and medicines that never reach patients.</p>
+  <div class="prob-grid">
+    <div class="prob-old"><h3>How deals are managed today</h3>
+      <div class="prob-item"><span style="color:var(--coral)">&#10005;</span><p>Spreadsheets and fragmented databases with no unified view of the deal landscape</p></div>
+      <div class="prob-item"><span style="color:var(--coral)">&#10005;</span><p>Email chains and consultant reports that go stale before they're finished</p></div>
+      <div class="prob-item"><span style="color:var(--coral)">&#10005;</span><p>Personal networks as the primary source of partnership intelligence</p></div>
+      <div class="prob-item"><span style="color:var(--coral)">&#10005;</span><p>Days of manual research for benchmarks that should take minutes</p></div>
+    </div>
+    <div class="prob-new"><h3>What CartaOS changes</h3>
+      <div class="sol-item"><span>&#10003;</span><p><strong>Data-driven deal benchmarking</strong> &mdash; See how similar biotech partnerships were structured — including upfront payments, milestone schedules, royalties, and common deal patterns.</p></div>
+      <div class="sol-item"><span>&#10003;</span><p><strong>Find the right partners faster</strong> &mdash; CartaOS identifies pharmaceutical companies that have historically partnered on similar therapies, helping you focus outreach where it matters.</p></div>
+      <div class="sol-item"><span>&#10003;</span><p><strong>Your analytical companion in every deal</strong> &mdash; A 24/7 intelligence layer that helps you sense-check deal structures, compare transactions, and negotiate with confidence.</p></div>
+      <div class="sol-item"><span>&#10003;</span><p><strong>One place for your entire deal process</strong> &mdash; Seamlessly integrates with Google Workspace or Microsoft 365, creating a central deal repository and collaboration space so the right people always have access to the right information.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- DEAL TWIN — merged hero-style section -->
+<section class="deal-twin" id="dealtwin"><div class="w">
+  <div class="st" style="color:var(--accent)">Introducing Deal Twin</div>
+  <h2>Transaction intelligence across the deal lifecycle — powered by <span class="accent-text">Deal Twin.</span></h2>
+  <p class="deal-twin-sub">Input the characteristics of your therapeutic asset and CartaOS generates a Deal Twin — a predictive model of how similar assets have historically been partnered. CartaOS analyzes licensing agreements, M&A transactions, clinical trial trajectories, and regulatory outcomes to help you find the right partners and structure deals with data-driven insight.</p>
+  <div class="cap-grid" id="capGrid"></div>
+  <div id="capDetail"></div>
+</div></section>
+
+<!-- FOUNDER -->
+<section class="founder"><div class="w">
+  <div class="fi">
+    <div class="fp"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAGQASwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6DToTTxTI+lPFeabDqUUCimAtLmk6Uc5piFFPFNApRQAopwpBSikxMWlFJSjrSEKKKUUlNMBRS0lKKoBRS0gpaYMKDRRQIKSg0UgCiiiqAMUlLRQAUUUUAFLSUtJgFFFFACUUUlABRRRQAlFFFAGdH0p4qOP7oqQVmaDhSim5pwoAU0ZooqgHClzTRTqBDhS0g60tJiYtKBSUopCHCiiimgFpaSlxVCuLRSUUALSGiii4BRS4oppAApKWimAlBoooAKKKKAFooooAKSjNGaQBSUtIaACkzSE80CgBc0UnaigDOj+6KfTF6c08VmjQcKcOlNFKKAHUUUU0AopRTRThTAcKcKaBTqTJY6l5ptOpCFzRSClFUkDFFLSUoHNUIAaKcBxS7aVgGUtOxSYppAJRS4oxTASilxSUAJRS0UAJRxRRQAUGgdKKACkpfwooASg0UEUgG0UpFFACd6Wij8M0AZq06mCniszQctOFNFOFADhQeKBQTzQAopwpopwqgHL0pwpopRSJY6ikpRVWEOFApRSgUxMAKcBQBTgKACloxS47UwG4pcUoFGPQ0ANxS7eKdjtmjHFADMUhFPxSEUAMIpKfikNADaKWkoASilooAKSiikAUUUUDEpKXFFACUlLSUCM5aeKYOtPFZmg6lFNpy0AOFJSiimgFWnCminimA4ClpBS0kSKKUUAUoHNWIcBTxSKKePegTACmyukfzM4UAEnJxwOtcd4y+JHhzwvcyWl9fW8l2g3i3il/eY9GHRT+NfNPxP8AizqPiPV3msy1tbNiNILe42Hju7LgkmqSuNRbPoPxn8XfDnh24+zxM97MW2lImX5Tj+IEgj8q462/aN019Rljm0QxRDmItNyeOQeK+X9UupJn3M8iuRgrJ+8XOeTk5J+oJqgt26l4pI8sePlbb+vSq5S+VH15F8e7W4j/ANH0kKEGcyTEl/QDgZrJk/aNMty9vBoMVvIh5Z9z8ehAIx9a+YLa5gb5UdjGvD7uGRvRh2+op+oCdYg2XkWPlXU5eP6Hrj2o5Q5UfSWr/HTxqpSbS7Dw9OhP+pMcu4j2yQT+Ga0vC/7Q00gj/wCEn8Krboz7Gmsrn7vuUkx+Wa+YtF165DMLiRpoVUkSxNwB3Oz2745Fdc8NrrAXZMVndfkSVsmQY+8j8bh0yOG+tDQcqPrCz+Lvw/urqK1/twW8suNvnRsq89iwyB+JruI3WWJJUYMjruUg5BHrX523srabfvbvaMZAMtscqw/3T3GP8jpXqfwk+MeqeE7VLdnm1TQw+2W2lbdLan1B7D9D7UmhOHY+vj1ppqh4Z17SvEukxanpF0k8MigkA/Mh9GHY1oEc4qSBppKcaSgBKD0oooASiig1IB2opKM0xi0hooNACGkpTRQIzacKYtPFZmg4U8U1elOFADqTvQKKYCinrTRT1oExRmlFFKKCRw6U4CkUU8DiqAcorw748/EzX/D97LouhPaiQgAmOQ+cAw9B06dete5BcjHrXyz+0XoRsPFEupNfpawzABg8xYscnBPPygnoOnFNFRWp4tearcTSGTUFkWSWQjO0OCTnqWOOuevXFYesK1rfK4kUK6g7GTyw6+xB9f8A9dbUt69vcvb6lBFeQk5Vo/lbHqP889x3ps0Fre6aI4vKmtmywTIyG6ZXPQ+oPpWysjRmfeXUEttl2bKPtLqfuE/dJ9j0z9M1m3bTQRtI/wC9iJ4kU7gp9Gx29+v1FF1bra3jsJP3UieU6SD769MH0I/wrKS5n02YpIC0DZG9e47H/wCsapCehemkZkW6twySpxgH5iPT3q3Y6ms8JJOT3VTg7v6GsyYh0862PmbRhgv8S+oHqPT0qgz5l3rL5bnlZOxPofSna4rm9H++mFxp9z5M4bOcYIYdyvf+Y9xWhY6zcxQmyaPy5oyGe3YnZuB4ZT2U+o6H2Ncc17IZ/MbKSg5PYN/9f3q1Hqjl0Eu3cuQDnBIPUZ9D6UNCO+fUYtZs1WWRhxmN5DiSCQcEZH5e/ei0kXFuzu0E6Ex+fb4DMe49z/sMOe1cjpuowRz4ffG0mQcHKsfcdifat6CW2kJ87iNyN7qNvXGCwHoccj681my0dp4Q8Qav4fu11LTdVceQ2/7RDkAjurJnHH4gjJ7V9UfBL4hf8JzpE63ogj1W12tKkZ4dCOHX2z6e1fHFjcGwu0LO9sZz8sp5jbtk/jjPXOQfeux8A+IJvCfii01GwZ7RNxNxHH0OT8y47qfQdM5qWhSjdH2s3WkrJ8G+ILPxT4btNbsciK4U5U9VYHBB/GtY1JiHakpabnmgAooNFIYlFFFABmkpaQ0CuFGaKKAMxaeOlMFOzWZoPHWnCmLTwaYDu1FHagUIBRUi1GKkHWhkseKXFJ2pRQIevWpBUaVKtWA4LyCCQfavmP8AbZd7RNKnEtuN5ZWSRAFYcdTjk819ODODt5I6Zr5Q/a91O28Q37aLvcvp6ZfCANGSc45PPAANVHccdz58gvftKmFUhZAAVKSE7PbkH8s01oLpC5jubPa4B+STlh6leoP0/WsmC3a9uVsLGLy4Adq5ckufU4xk/oK7/wAMeAo0+aaIO3GSe1aTlGB1UaUqr0RyhtZrlWL3ALHgkZII9wRj/Paq0ek3jHYrbhnG0AnH+fSvbbTwlabFUwjA6cVtweGreJRiBM+uOa5nibHdHL29zwG08L3TndBHKrg5KqvFSTeH7tCBPb3BkPcKBn/GvfX0kK2I4EOfUc0xNADyfOhJJ4yaX1ls0/s5dzwM6A8v3IJI2J5DxfL/AIVFc+E5xHk20gPUMvQj6V9I23h2HcMwDPqRVi40OJIgpjDKOxFH1poHlifU+Vm0qa0GJVlC54yvT3q/pEtzb5CXD7VGVJOPqv0P869/1PwxZXKkS2wBPAwuK5bUPAsJkDWwKjByDVrEKW5hPL6kdjgodSla0ktLqMPbyAjeV64xgMR3z34NdDoGpRym1jlmJG0bZCPmz2J9SB+YJ9quT+C7xFfyHaORupVuPp71xmtWV9pd5CqJ5Mkbl3kUbUJ6DAHT+VWpxlszCdCcNWj6j/ZZ1uOyu9V8M3t0sTybJrSAMPKYc5MR75BBr3418S/A7xzDpHjXTrvUdJUtkpJMnMOGGN/HCn1xivta1uYLu3jnt5VlikQOjKcggjIOaGrHDNaj6SiikJAaSikNACiikpaQgoNFFACYooooAyxTh70xetPAqDQeKcKaKcKYDqWkpe9ADlp4qMGpFpMlj+1KKQUoxTQiRelSCo1p4BPT8yelUBz/AI91uPSfD9zKqtNJ5ZBhUlWZTwdpwfmHp9a+MPE10dSvNSur25nuJZIny5OXB3YVfwxj8K9g/aQ1u5gvWsbe5u7Wa7dI3hKs0bqOrbiNq8ehJOK8J1OWSWS52geY1xsAA4HPy4/rVrQ1pxvsWfhB4bM/m6tNEGySsWBwBntXr2l6YioMpzUXg3R4dN0O2tUXG1QDXSRwhRgAYFcFWo5SPpMPRVOKRVhtFQH5Q2KtQQBkz5RBNWAgVQAOT1qzbplj3OO3SsrnZGJSWxRTyh3dyR09qsRWQ8zOAp7VoxpkfMvJP50/aAw5UA0waKjWinDbVwKgurcbAMEjHXNajEAe3aqsq5/GkyooyhaBiNw/+vUMtgpGdvHpWuOFwagumIA2ikDiY0unx84XnuK5zxB4chuScxg5GD7iu1Iy2e361HNCrDOM1alY55wTPnnxD4XbQdXjubVptshYhA37sHB5IOea+s/2cNauNW8AxQzqqtYn7OqAkFVwCCVPTv8AlXjXxLsRLozzRAebH8ycd62P2U9Ung8X3WnGYtHqMLvtYnhoujHnnIP+cV3U580dT5/HUVTlofTJ60hpW6kUzNUcCFNNpaaaBDhThTBTh0oYBRRRSADRmg9aSgDMFPFMFPFSaDhThTVpwoAdRQOlFAMcKkWoxUi0iWPpwpg608VSQiQU5tuw7m2jHXOKatEy7oWHzZxxtIBpgfJ3x81Wa48XXVhb311dWkaYWIzIy78g4Kj0HfrzXCWEEL31pCVErzXK3LN6Ag4z/ntXW/tASXMPj5ofskEKyRMAsewO5PRjtHA4696w/CMRuPEEBKnyjAsigjBwBhT+pom7JnXh1ecUeo2ACRIOtakZ47cVm28J8tQvX0rYtrZioGK85n00Rp5bgnAq5a5A4xn1pq23zjrj9BVtIwqcDJ60jZND0G1Bk5wOvelADEMy+1NCkgFjgd+am2bjkZxVJCZE5UHHPHt0qvJktjbgHvVp0AbHeonQjnPHqaGikVWVQOTz0quwLHduBFXzGwXk5J9aikiIB4HvxUj0M+bG/Oaarb1znpxVma3OCw4qp5bR7uOKVzKVjnvGcPnaTcRjjMZA/Kud/Z+vYrHxvpZcOLi4Z4RgAd/vc9sduPUV1muIZLOUkcFT9OBXFfBC4+yfEHS5jbtcP55CYfaRu4+X3H9cV24c8TMdbH2Fhv4gAfrTT3pxz3GD3Gc03rmtzxhtBoNJ7UAxRTqaBzTwKBCCg04im0gQdqQ5oooGZvSnCm04VJY9RThTRThQA7tSUtFAmOU1ItRrUgpoTHDrUg6VGOtPFMRIKWQEwuASCV6g4xSLUiUID4r+NQvpPGV3eX0LxZnYK0uQZBgBQB/dGM5qz8O4vP8AE10CCfJtUQc+nFdl+0jpcz/EYLHGWWW0ikjHUEjIPFcr8I43Ota5csXIjiSMb+uc9f0qKkrxaPSo03CUZPZ6noETwwD5nCsx7nvVwanb29tvcg+46VwGtRaxHPJMLk5blSF+6Px6Vz0sWt3Lb2uXLqeP3gAH0rnUEel7eS2R62/iWwEWVkAx1z2/Oo4PFumyN5YnjzjOcgD8M9a8YvtF8S3OCkh/3jJk/oK5+fRdftZP3jOGXo8ZOTVqnAzeIqrofSlvrEMxASRW/HtWzbSLIgwy4xxXzn4euNTimi824lY5GVcnP5Hp+Fe1eD7iRLQGWRpGPIJOcVM4qJ10aznudS0a4yDmqF9KiKxyABycninX05wTyVC8HNct4hvV+wsqEj2B6mo3OhysrmlJrdqshQyqD1GaemuWEp2G4j3DgpnmvC/EV9f3EkkUTlVzjJ4z9OwFYEF3ryzfuzcuAflxn+XpWqpJo86pi5p6I+mftlnIhAlBHtVeQDaSCHX19K8QsNc1yFlW8t7gLtxkDLfl3rotM8U31uuxxMV7FkOAPQ1Dpdgji31R2fiHMWj3sn9yB2H/AHzXl3w21e6tfiRpMFrFA00bhcOcZDMAwJ7+vrXZXmt/2l4W1nchjdbVmQ4wG/wriPCWnQJr7XcmVS2jSYzBsbWIGAMen8zWtL3Its5a8XiJxhHqfbqMXRXwwyM/N1orE8CXk9/4O0u8uS5klgDZcYZlydpPuRitrNap3VzyZwcJOL6CZoNGKQ9aZIoNPFRjrUgxTYmhaQ0UGkNCGkxS9qSgDOFOH1pimnCpLHinDimiloAeMUd6QGlNAmPWnio1qQU0IcKetMFOFMRKtSpUI6VKhpiPJvjpp6t4j0rUZFHl/YpYQfVt3T8mrz3wTo39m3Gry+YJY5XQA5yRwSQfz/lXpv7QEMr2WmTLnYgmGfQ/Kf5VxPha1MPhxTJjM0rSk98EDH6VyVLqTPoqCUsLTk91p+LMPxXNNDEZ3+SLPCsBgj8815Pr3ifVRdkRafeS22cIIG2g/U4ya+grOzsrlWDIrseNx5J+lYmr+GDayefaxh167DgEfQ/41lTqJbmtSm5L3dDwqLxJ4iW4CrYRW0JjLtJK0rkY/hOD1osfFGqXu/zYWj8uPzGkhl3gDOOVfn8ua9fljs1GJ7JA2ckOm0/n3rnNY0qO6HlxwqQT6ZPU966vaQfQ51QqJ3uYuj6pPdRhyEl2t/rI/wCo7GvTPBVy91EoXIB4PPSuT0bQ7fTYme3skWWRdrH1+tdt4JtTEFVAMk9awqNdDsoxl1Oj1OCRbMnPavJ/FGuSQzPBGCzL97Hb2Fexa0JBZMMgfKd1ePXumRzX12svmHe3yuhwf/rVEVrqaVU0tDkJdfWGRy6JGVBLZBd8Ac/Kv9aQ+NLOyt0uDZagqyD5X+xjDD1+9nHBrTj8NxWTPEiTtBICrBmJyD1B9a0YPC3ht1jLW0asAQcen49K6k4Lc86UKrfumCnjWyuI1cX1qmQCEuYTGfzHFdJod/a30G7AjbOCEywPuCOoqsPBugzTAQ2ZupG4wOfz7Cuk8P8AgaCxjMjq8RJztibKj2x0NZVJwWxpCnUv7xotpkUnhTUVhEm4wHAZQM/hXNvpq2/hWNhHiV3gUt03ZOOa9C0i0RIpYcLslTYCv3WyPTsfasjwpCfEmr2+juEUPMikgYA2HOfyBrLmclY6sNGNOr7R/ZPe/D8H2Tw9ptrjHlWkS/8Ajoq7mg4AwowoAAHoKbmu9aaHy0pOUm+48E4o6mkB4pRTJFxSjNFAoFcdSUhopDQppKM0lAGdThzTactSWOFKDzSZooBjxTuMUwGnCgQ5etSLUQNSKaaEyQU4UwGnCmIlFSA1CDTweaYjnvifbQ3HhCczLu8uRGHGep2n9GrydIZIbGGz8w/uxgkdcen5V7L40DN4WvyqbysYfb9GB/pXjgl828Ctgljkn0rlrrU9jAyfsbeZf0u2/eKyjavb2ralt2kiIKgjtWXbTDeFVuBwBWp5uIwNwOfU9K57Ht0o6GFqdlG+dqCs06faovKZPfI6V0k7wqGLkD1rIvNT0/8A1auHf+6KTdjdxRi3UKM5SNcdq2fDsCxPgqMD2qvaqZJS/kbFAzz3rb0y3LTKV59aadzNWuTaq6CB1OMkdK4Oez2Xe8DHPpXca0hQlTyPcd6wbzZGit5ZbPbFNhLcrDTra4TldrHqMU+Hw7blwMP784q5p95Ys6x7wjngK3ety2EWdwINK7ZahG2xnWGg29thliGR3JJP61YvrcxoNo6DkVrrIir8wH51RvLgO5VePqOKXKZzhZaGNZL5F4DjMUpyR/dNWfgnoz/21carLGVWIyFcjuxIH6ZqO4wkqnGATn/Guz+GdsYNMu5Wfd5k4CY6BQOn61tSj7x5eJquFGduuh1rHmkzTWNGeK7D58kFOFMU08UwYoNOpgpwoEKaTNBoFAwozRRSAz8U4U0U4dakthSikooELThTc0o4oAeKeDTAacppoTJAaeKjU0/OKZI8GnqeahB5p4PPWmBMNrfKwBU8EEcEGvBNUC2viHUERFSOOeRFUHoAxAH5V7wDzXhvj+IWfi7U0/vTmQfRsN/Wsa/wndgH7zRSS8kVsFhilu9dFtb5d8KB1JrBuLllIK5x2HrWPbNLf3zyXMm2KNv3a+uO5rl3PooVeWJ0UEt7rUnzSPBbZ6dGYf0rRgsrS2u4ANuzk+uT2zWdZ3CwIDG3A71PezC5ttyHawH97B/ChxNfbRZ1DGEDGeGGeK19HjRYTIrYz05ryM6zq1swUlbqMHoRtcD69DXUaB4nb7JsySufxB96ajYmM43Ov1iMSqXEnB6ZHWslEi3hZO1Y+veKUtoRyM9s8n8BXPDxHf3BxDAIlPV36/kKGrlSnE2dTt4JNXkjReMZyD3psV3f6ac72nh64/iUf1qDTSzEytJvc9SfWrVzvIOfvVPKX7WKRpWGtRXCBxJnsRUk96CSR+VcVcs8F2ko+Uu2GC9Cf8a1Le6dgFLZzS2MZVk0bk9yHiTDdBk/WvUfCdqtnoFsmQWlXzmPu3P8sV47bs1zIIwOThF9yTivcIUEUKQjpGoQfgMV00FuzwcfN6LuTFhSr0qIGnx9a6DzCUU8Go6cKYmPHWnA1GDTgaCh1BpM0CgBaXFJS/hSEZ+cUoptKKkodRSd6cKAEFLnmkNIOtAEi0+oxTx0poTHjpTs0wUE8U0SPB5p+7mogadmmBMGry/406WyXdrrMQOyZRBMQOjD7p/EZH4V6WGqrrVhbatpc+n3QzFMu0nup7MPcHmlOHNGxrRqezmpHzjAA06xscgHmq+p2Rim3W/3sZXFX/EOn3Wk6hPbXICz2km2QY4ZeoYexHNLGfNnDsF2lQUx3rz3eLPo4NSicjfeIptEuCmrWM/kdRNCQ3Hrit6w1bSL2FJUu2IcBgSMfQ4q/rWjRahZlHVZM8jI6Vz3hdbHQrO80zU4DJYsN0DquXhffnH+7yfpzW1k1dGvJpeKudOkWm3BX/Sowcc/Jj8ahu9ElaXzLKVZAvZGxuHvXTWXgrSL/UrqO1vjAVtlmjRWyFc57ehxV64+GtzH4cXVU1RGuPK8x4WTAI9AQc0lZke0oPd2OCTRXSR5ryVF9Az5NTRQ6fCSGu4yD6A11178Nb610KTUpdQhMioH8pEJHOOMk9eaz9Q8HQabqLW95fq0UNoJ5sYBDHPy+w4NFl3LU6PRmPNqGj2kDTS3ccEaDmRztH5msL/hKtOv7xotLlkvMDl40Owf8CNYWv6B/wAJLe2OGkNlCuSrf8tJCeuOwA4Fdpofh+1sLJbaKIIoHOB1NElGMblygrENvbNdukk3bkAdqmYrBM7L16KPWpo5Eh3hWwEHc9PaoLNFmka6kA2KflHdjWCvJmErRjY6r4d6cbrxBAHUslufPkJPHHT9cV63u5rm/BGkjSNHXzVIurnEk2eq+i/gP1JrfDc13U48sTwMVV9pU02ROpqRDioFNSqa1OYmBp1RgjvTwaBDlNOqLvTwaBj80ZpoNLnigY4HilzTRS/hSYihSg02lqSh1KKbmjNADqSkzRQA9aeDUYpc0yWSZozmmbsUbqaESA0FsVHk0ZPemBLuOKA3Soi1G71qhHE/F3QftmmHXLWPNzZpidVGTLD3PuV6/TNeR28gaM2ykHYN9u2eo9B9K+kdykFWAYEYIIyDXz1460yLQvFV1ptsSIFk822/2QQG2/hkj8K5q9P7R6eBxDtyM0NPm+RckkEcVT1bTFldp4lVj/EtQ2c2WjwwUSjcvzfpWorED5TkgcisE7M9ujU6oo6NbzrdedaX1xZXBAVmhbaSB2I5Bx712M+u+JxpSafFJpMm2MRiWZZCxHTJAIBP5VzDLBkSlmjfoSvrSi4UcNeNuPf1q+ZPdHRNUanxI39U8Ua/c6dLY3DWVupC/vIQ2flYHoxI7Vyd89xqOoyXs8jXF1Ku1iTxgEnGPTmrDxwzHcbwsO/erFrJDA22GMnjrjpSckXFUKavFakdrpy21s0kp/eE54pl3PsXyoQS/wBM81LfXGMFjz1xWaJSsLzt0U4GOufSs277nJUqu4y+KBUtolG5humPrXT/AA20X7fqJvp0/wBCtGGwHpJL2H0HU/hXKaXZ3ep6hHY22ZLi5b53zwi/xN9AK9r0izttL06CwtFxDCu1c9T6k+5PNa0qd3dnlYzEWXKupobjnOakB6VWDZqVDmuo8gsqalQ8VXVscVKh70wJxTwahBp4NAiXNKKjU08GgaHClHNNFKKBjxS/nTAaeDSEUKMikBpakoM0A8UUZoAUYxQKSigB+aM03PNL+NUQxc0ZptOFMBSaaW4pGpjGmA4tSFqj3E8AZNePfGf4v2ugW8ujeGbqK41VsrNdIQyWvqFPRpP0X68VcIObshN2PVv7b0weIYtA+1o+pyRNMbdPmaONervj7o5AGeSSMV5D8ZRs8c3dlKuwywLPbv68bWH4EfqKb+yVAt3pHiHxLcM017eXq2xmclnKqoc5J65ZufoK6b9pXw/Ncabb69YoftVgDIMfxpjLr+Kg/iBU4inZWOrBSSnr1PLNDu1YG0YAOuWU5/SuntZi6qxHXjI715/Hc+fDFqVtk9G+U9/Wuk0W/wDPQrGx+cEnnGDn+nH51wNJntQvTlZnTFDIcgZGMmq0tohYMxIAGV4Iqa0mXILSkLjbgnOTUsl4iSEPjbjCjngUtjq3RXjgjUKU3YJxlRgY96sOkcQyhJJ68U7zWwyYO4Hj2rO1K8EMAQbSeRtU/NycUmU3yobeEHMnyjsCDWJeXa+YI42OyPnJ9f8A61N1fUUAKmRYwOp9x1rGgu0uruC1t4zK00oRMD77E/y7k+1Oxwzk5PQ9n+BulM2n6xrUsJlla3aG3X2wSce5IArT8HeJ9L8U6JFqulTl4idskbjEkLjqjjsR+vau28EaXHo3hqztgNuVBY46nua+NtN8U6j8P/jF4hQRlYV1SeO6tM4V08xiMdgQDkH+hr0aNHmi0t0eHXnzTbPrGNs81MrVheHNb07XdLi1LS7gT28nfoyHurDsR6VsI+RUWsZltDmpkYetVEapkYUAyyDipFaq6vUgNAiYGnqahU804HmgCYGn1Cp9akB4pMY8Ypee1NBpaAKNLTacKksKXFJQaBC4opM0hNNCY6gn3pmaM07CY/NG6mZFIWxVCB25rF8V+JNG8MaW2o63fJbQj7i9ZJT6IvVj+nriuG+PnxUi+H+iCDSha3viC4cKlqzZMCEH96yj8AAcZznkCvlLXvF2u+IruTUtbnuZ7t+MzPuwPQAcAewArpo0HPV7EylY9P8Aih8adZ8RJLYaYW0jSmJUxxv+9mH+24/9BHH1ryKa4aX5snFUXkeR8sSTUuSI8V3xgoKyMm2z63/ZAXPwwlGRl9Yk/wDQUr3Dxnpkl5orRi3Mu1AwAXJOPbvXzx+xhqXl+FdehOGeyuRcop94wB+o/Suu0a/1DUtVk1O4vJ3meUsHLnIGeAPTFefXdpNHVSi2rni97pz+FvF+oeHiP9GjlL2xPRom5X8un4VdjVrabzLc8N1BPX616L+0ZoEl3o9j42tYwXt5hBfgDlNwwD/ukgH2Oa8506YSwqcgqRXlVouEtD6PDTVakrmtYaqkcqwSGNZWGcMCARn+nrWhLewMqHBLDoegzWOIEkGCoPsacLQHaolnGOi7jgfQVm5mqpyjszVbUV3sYV2443P1+uKw9QvWV5Sp3SMMZDcg9qsNYdsyPjpkmontFRCxUAnv3oUkDhKW5zjWkkr+ddyM59xwPw7/AI16H8A/Cx1nxSdYmiY21u3lwFhwx/ib+n51z2h6Bf8AiTW4dI06F2eU5kZRnYg6n/D3NfSvw10vQtCWDTE1CySdAFWFZDgH+6GIwTXRh4cz5mcGOqqnDkjuzotWjETQRrwo+Wvhv9pyG3h+Omvm3IxKIJXx2cxLu/UV9r+O7z7FEZWO0xnOfTivz7+I2sNr3xC1vVmORNdNt5/hX5R+gr1sNH3mzwaj0Lvgnxnq/hnUFm0+9aFzgMp5jlHoy9D/AD9K+lfh38SdG8UrHayMthqhHNu7fLIfWNj1+h5+tfHrcmr2najJbsqszYByrA8rW9WhGp6mcZtH3kj881Mjc18xeEPjP4g0i2jtb1YNXgThTOxWUD03jk/iDXrvgf4r+EPE2yBb5dNvydptrtwMn0Vx8rfofauCdCcOhqppnoysDUqvVMMQealV6xGWgaeGqsrVKGoHYnXmpAagU8VKppMZKDTs1GDTs0CKtFOApPwqSxKM0E0hNAATxTSarapqOn6XA1xqd9bWUSjJaeUJ+h5Ned698bPBunyNHZfbNVcdWgQRx/8AfT4z+ArSMJS2RDaR6ZmsTxd4r0DwpYC713UY7UMMxxD5pZf91Byfr0968R8U/tCX8ltJDoOkW9lIwws80hmdPcDAXP1zXiOt6zqOsahLfalez3d1KcvLK5Zm/H09q6qeFb1loZymuh7h4r/aJv8Ae0XhjQLaNM4Wa+cux99ikAfma4bU/jf8RJwxOtLbE9FtrZEUfjgn9a84dmx1qncTHHPY11KhCPQz5mWdRvbrULqW8vJ5J7iVi8kkjZZ2PUknqaoSMORUjsSvtVeTjrWwhob3qVDnIzVZWyfapQwBpgz3z9jW4Z/EfibTNxAm0nzAPdWHP617B4Jtj/o+35lcA5FeE/shXK2/xSvQ7hVl0S6ABP3iu08fka9/+EEy7W064x56APAT/F6rXn4iN6h1UZWgdVdafbarb3+g6iQLDUIDbTHupbO1/wDgLAGvmmSxk0PWrvRLmOZLqxlMMwcjkj+ID0PX6GvqPxDYtIVuLcFcr2/UV5J+0Bo26bSvGMChWuV+xX3/AF1QfKx9ytcOIpvluejl9dRqcvc421IZc9/rVyFU7glhWTYSlSNxrXtxnA7detee0e5zFpbfcmemfeq1zZvM8cFvF5k0rBI0UcsxOAB+NWgWHAAwK6L4U2yXnxM0pXAcW4kusH1RCV/XH5VUI3kkZ1KnLBy7HbeHPCtv4S0iSwtgk2pOn/EyuV6s+PuKf7q8jHc5JrJ1G0aRXUZDgbgB1zXoMduXSXrvYMzk9Scniue8RQLBNHcRgDK5x69iK9LlXQ+c9o5Sbe5l/EHWpbn4Qf2vO58+O1kjkY92jyMn6jFfCcbFsyEklySSe+ea+yvjvcLY/s4XksAKeZcPEBn+/Lj+Rr40A2oBXfhVo2ctbcV25pwXIzUTnnrSo83K4Qjsa6jEneKKbEcwLKP4dxA/SrHlxIgSKNY0HQKMCqiiQnJarCM2MUCO/wDh/wDFjxR4SMdqZ/7T01TzaXTEhR/sN1X9R7V9FeAfiV4Z8XokVpcm0vyObO5IDk/7J6P+HPtXxnO5yAT9DUtndSW8oZWIIOQfSsKmHhPyZam0ffwY9MVKjcivl3wF8ZfEOlwpa3rR6vbqMCO5ciVf92Trj2Oa9Ds/jrpQUG/8O6hCfWKZJB+oFcUsPOL7mqmmezI3FPB5rzPTvjN4Luf9b/alr6+Za5A/75JrptI8e+DtUYJaeIrLeeiTMYm/8eArJ05roPmR1amng1CjAoHBDIwyGByD9DT6gY3FZviTXNK8O6VJqesXiWtsnAJ5Z2/uqOrH2FXNUvrPTNOn1HULhbe1t0MksjdFUfz+lfG3xi8e3XijXLjU5neOziytrATxFH24/vHqT6n2rSjRdR+QTnyo9O1D9omRtcNtpXhyCS0TljcTsJCvqdvCk+nNcl4q+M/jHV/MjgvU0q2Yn5LJdjY9C5yx/AivJrN2gsxvOJpfnk+p7fh0qOSdj3yK9GNGnHZGDnJ9TY1DVri7lMlzcSTueS0jlifxNZ011nPPHpVFpO3NRtIc46VsiCZ3LGm96jV+9LuzTAeTmq11EGU4qYmoJG68UDIo2byQD1HWoZW//VQr4kdST602Tnk4poERqTn2qUNjHOaiGfWndRTGdH8Ptcfw94y0vVQ5WOGcCbB6xt8rj/vkmvsTT7RrO6S4t3AYYKMPboa+G1III7V9kfBvXE8Q/DzRruSQPPHB9lnOefMjO3P4gKfxrlxEdmaU3ZWPZdHvxe6eLlowVJ2yJ/cb1+hrG8UaPDqvh7U9FubcTpdtG8KM20blYchuzY6VH4WvRp+oyWdyAbecYJPQGusW1jmJtpQGHVGPcVzSV1Y0jLld0fN/ijwZqHhyZ22SS2qn5t4xJF/vDuP9ocVRtztjDV9QXeimS2ENwkV1ARt2TIGwPQHqK8e+JXw7n0eObV9BDyWSDfPbNzJAvdlP8SD8wK4KmHtrE9jD47m92b1OEWXIByT9K6X4L3DH4q2cY72lzn3HlGuJtrkPIwJ47Y712nwgsNQtfGdr4jmK2+m7JYGkdCWZXUqWUDsDjn64rGlFuasdmJklRlfse0C6m5SFd7KxUZHqTWB4xkj0rSmnnbzJydkS55LHk/QV2U8dtY6es8LK6FcrKGyG9wa8s8RXb67rkhLZhiGxPT3NelY+cTPO/jxrDt+zxFYXDfv7rxDgDH8KrvOPbpXzE5r3L9qy4ew/4R7w2XUhFmvXVOxcqi598K3514WTxmvQoxtAwqu8iOTrnJFPhP5U1uh9ulCNjg1qZstBuBT1IJFVwcjANSIcHvxSEOl5cDHQUmO1LGNxJNOIHWgEJGxQggkVcjuZcDEjD8TVTYDyD+FOjOMUDLwu7gD/AFz4+tWLe8mxncT9azmOelKkhU47U7CO58LeNfEWgyB9I1i7tADkxBy0TfVDlf0rqNR/aF8bW900bJpyjAK+XZggj15J968mjlYEHJqfzFYAt1rN0oyd2ilJ9Ge7/tR+OVnvI/CGmXO6K2bfflDwZf4U99o5PufavnHVXM0sUDciRxn6Dk1o3ly80zyyOzu7FmYnJYnvmsSeXOqxjsqMaVKChFRHKXM7mjJluSajI4OarLdMHxninmTd0PFXYm4PxUbH2pXbg00HODTAXNKD3poPFITxTFsSFztqJjmhjxjmmE8UhlaU4nDeoxSv0xSXIOMjtzQxzjp+VUMapwfrTjwc0i4ycmigYZ54r3X9lfXjHPqugSPwwW8gB9R8j4/Aofwrwk9faur+EusHRPH+k3bPthafyJj0+ST5T+pB/CoqR5osqLsz7fs5I3urWWUAox2P9DXa2iPCBbMx2jmCX09jXnVkTJZHH3h0+or0Tw/eR3elxPJg5XBB9a4WaXNiz1ASxtBMNsqcEH1qzIsV1aFgill4INZV9bAIJ42w69CT95fQ+9VvPvIxIVMUMTqAzTShCp+hqdgtc8YsfhjOfiBq6yxBNFtrotbr/wA9Q2GCj/ZG7B+mK9Tt9KhW0MJjVdq4AA4AqaW/tLUY+0ec2clbdDIT9WOBVK68RTyDZbaNyBjfNMefqFA/nWMUo7HTVrTqW5nsZurtLp3hqe1VnQT3IMAPGV2kOQPTOOfWuV0QpD5nmd8jmtjU47y4uXur1y8rd+gUdlA7AelYEzrA7bjhc5b6VtFHO2fM/wAfr2G7+KGoxQ/6u1SK3HOeQoLfqxrgCeB6Ve8RX7an4h1LUWOTc3UsuT6Fjj9MVQY816MUlGxg3dg/TGaZ0470p6dabnmmIkQ+tTA/L7mqy9cGpWOFoE0WbY/Ln1NSZxUMJKoo9qlyMdc0ALx70DjkU0+tAY8UgJcilBBI4qEn35pQ2OM5oE2TKxzUobjrVQtxmlEhPcfiaqwrCPLzWZIf+Jlk54hP8xVh5O1VWbGoIx6NGVpMsQvkEdfTNT2sm9SD1FZ8jbZiATjPaprOTbMVOBnpQK3UvSelM3YGP1p5NRNyc0gJAwpc1EDxTs570wYMefSkPAoA/WkJ56UMBjjAz2qCIkx4PVTirDelV1wJnUdDzTGHOfendu1IQM0ooGKevAoQspBU4YH5SO1HHrRkD3NAH3F8LtUXW/CWmaluBNzao7f72Pm/UGu88IS+XLcWbchTuUexrwb9lPVftngdrFmy1hdvGBnorYdf5tXuNkfs+swS9Fkyh/mK8+Ss2jXc6SeSYJcNbttMMRfHUZyAOPzNcwbOEhmulbzHO5Wz3J6n1HWuniYqlyoGTK4U/QD/ABNTWelQzGOWZFLplVJHRSQSPzArlq0+c0hLlGaTYRf2ZEXQA44z6Z4pxsoRnKitiW3ESfLyKpOByOlaxVlYhu7OV8RW6LG2BXj3xM1Q6X4Y1m8DYaK0k2/7xG0fqRXtXiVc2zH0r5j/AGi9R+z+F5rXPN3cpHj1A+Y/yFbU1dpCbPnr+EAHOBSL0pBjGOlKM/ia7mjnsxSM89aYeuBTjnH4UzGMYNBSFBGeKViTgdCTTQOaTP7wD05p2C6LsZyuD1p4I9qroeBT88CkIlLUbs96ZnrSjGKBMeD6U0nHOaM01jgdaCRQ3BJ6U3kk8CmZpjPzwKBjWPf1qtO2LqA/7WKl38+tVrtSFDZ5VgRQXYgviUnyDgGgP8yv9KXVOQGAqtH80VMdtDcjkLoCBSMSag09t0ANTP8AXFFiE7aCA5708dKjz3xilU/jQU0SA0zJJ64oB4zQc46dO1KwAxNVpuHDg1O54zioJclT6+lMEPPQHBpAeKSNsqe5x0oJ/WgLCg9ulIT3NHHU0nbNAz2z9kvVfI8Y6npLNhLu0WZB23xtg/8Ajrn8q+p5yVtlnXrGwb8jXw/8EtTGlfFDQbkttje4+zv/ALsilP5kV9v2xE1iyHuuDXHXXvFx2Oq051kRJCflctz78VsJIoUKO1c94VzJoKyHqsrL+QFayFt4PauV7lmm0m6LBrPk4bNWI5AVPNV5T83SqQjG8SDdaP8ASvjL9pu8L69YWAbIRXmYe5O0fyNfamrqHspM+lfBnx/uTcfE7UIgSRaqkOPcDJ/Vq6KK94mWxwAI9OacDSHjp360wnIzxXZYysPLcjNNznpx6UE559uKTtQPYevQk8mmQ4LO3vgUFtqE9OKSEEIPehEtk6HGKkUgGoFPHFSK3HTgChgiQEU4EetRgginx8jFIGOzjnNMY5OaDk009Pegka596i+btUjk1CzbTgHA+tA0yuJhgc8j1qO4kLREHqaa+JBkHmq8rFTg9KZokWZv3lr/AMBFUrUkMV4q1bOHtivccVnhtsuRUt2GjW084UrnoelWyfaqFkctkd+tXycnPWquZvRiMefWhelNNGeKAepJ27U0tjik4pBwT3OaAQ88npUcnenA8U0kgnPNBZFC2AR+FPJqL/loR0yKk4FAB2yaO3WkP3TTSOfwoAsWV3JZXkN5GTvglWVTnupB/pX394avY7ywiuUOUmjWRT7MAR/Ovz4PI2+vFfaXwK1T+0PhtoFwWyws1if/AHkyh/8AQa58QtEyonsnhH5dJK44+0yf0rb+ULWR4MQS6PLzz9pf+QrWeMgVwvc0I2fy24PWgtvzUU2QDmoIZgJdpNOIMS8OYHUnrxX51/EO/Go+O9c1APuE99Ky/TcQP0Ar798d6iukeFtX1NzhbWymmz7qhI/XFfnC7szs5J3E5Yn1rsw63ZlUYM2TgfiaaPpSL1Gad24PfvXUShCQfwpScntSfUUvGeOtIY2X7u3rk08fKuPTvUXWZVODjmpm6n1oIa6jlwQBThweBUQNP3Ht+HFAJkik55PFPXOPQVFk9wKkHQcihg2OJGOtNYgDFKTyR3qNiec9akkYx9qiIJ5xUp4BPem/N2/nTAw8z27YkRuKl3iZc5Gatycdsis+aPY3mRnAz0FTZo23JbMYd0PI61VnAWcjtmnwSYuAfwpt1/rjUTemg1uWrE5YgVpIcDHGKy9O++ee1aYOMVsnoRLcdnnJo/AUmeM0Z45NBDF75NBwB3zTcjFBzzmgcRSeKjYnHpSnPrQSO9BSaZDKSCH9KlU5GetRS/dPHBFLCcpnJoGSZPSkOMUZ7UhI60ABHrX07+yzqJl8AvaFubS/ljx6K2HH8zXzDnjPNe2/sp6iY7jXtOLcHybhR/30h/8AZaxrK8Con2b8PDv0WY/9PLf+grXQlNxrl/hjJnw/Meubpv8A0Fa6sferz3uaFK8g+UnpXN3k3k3iZ45xXWz4YFa43xUphkEgyADTiBxH7TGrCx+DGuSK2GuUjtV5xy7jP6A18LsecjivqT9rzWD/AMIDpOnI/wDx9X+9x6qiH+rCvlgnPSvQor3TGbFB55pwJ6etMGNxNKCdufStSIoceScUnQcikJ59qUkDrQWMTBdmHToOalIqG3Hyc9zmpT04PNDIYZI5PNOHI+neoyefenY54NNCSuPGeOakAyM981CuQcGpIzz15pMdiXG7FRuME0rkBSahaZce9KxOw6TkdsUFT7Uwuzn5VOB3p2c+lFiloZ27sKZIm4YGc1KwXHHrVedwucfTrQ2kUipJlZMkYINOuW3NuqN2y2aH5UGsG1ZmhZ07l8da08nHt/KszT87+K0lyDzWsPhREtx6+7Uds9aYDgEE5zSqRnHFWZD+i4pCfWk7k0hIHfpQNOwpIPA7Uh9z9KaWOMCm5z2pagtx0hyMVFEfmZR0Bp/JOCKhcsJlPrR0NCfJBJpCctnGRSAknqaG544osKwhyRXov7Ot8bX4iNbliq3VlImPUqVcfyNedjpmt74b3v8AZ/j/AES6LYH2kRtj0cFf61NRXiylufof8J5d3hV3Izm7kx+AWuyQ5AJrhPgrIJPAhk/6fJv/AGWu4gbcue1eZLc2I5mw1c94ui82yYgcgVuTNmTFZ+rAPbvG3IxTiI+Kv2qNUabXdH0zdkW9u8jD0Lvj+S14z1PQV6J+0fceb8WdTiBBFqscIHoQoJ/UmvOc5zmvSpfCjGSV7jsg8Y5pfbOKaOD/AIUZ+Y881YDhyvNRXJwhAOc8cVKnf3qtdMDIqenNAmWItojA79KecYzUCOAOPyxSlnI4ApkskJA6j60LIBxTVQkDc35U9UUZGBigasJ5wOQqkmlUu7emKeoXp/SjPU89e9Jj1G7CT8zE0uwA4UAA08YxxnrSHpkUIloRcjA64qNidxxkVJ07/Wo2UE5wDTDU/9k=" alt="Anastasios Mastroanastasiou"></div>
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">From One BD Professional to Another</div>
+      <p class="fq">"I watched biotech teams with transformative science walk into negotiations outgunned — not because their drugs weren't extraordinary, but because they couldn't see the full deal landscape. That asymmetry costs the industry billions and delays medicines from reaching patients."</p>
+      <p class="founder-statement">I built what I wished existed.</p>
+      <div style="font-weight:700;font-size:16px;color:var(--text)">Anastasios Mastroanastasiou</div>
+      <div style="font-size:14px;color:var(--dim);margin-bottom:12px;margin-top:4px">Founder & CEO, CartaOS</div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:580px">Former M&A Due Diligence & Competitive Intelligence at BioNTech SE — evaluated clinical-stage oncology assets exceeding $1B. Educated at Karolinska Institutet and Stockholm School of Economics with scientific research experience at Harvard Medical School and King Abdullah University of Science and Technology (KAUST). Anastasios lived and worked across the US, China, MENA, India, and Europe — bringing cross-cultural fluency to a fundamentally cross-border industry.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- VISION -->
+<section class="vision"><div class="w">
+  <div class="st" style="color:var(--teal)">The Vision</div>
+  <h2>Discoveries only become medicines when the right partnerships form.</h2>
+  <p>CartaOS exists to help those partnerships happen faster — enabling therapies to move from discovery to patients more efficiently. Because when collaborations move faster, patients benefit sooner.</p>
+  <a href="#" onclick="openModal();return false" class="bp">Request a Demo &#8594;</a>
+</div></section>
+
+<footer><div class="w">
+  <p>&copy; 2026 Cartaos Ltd &middot; 71-75 Shelton Street, Covent Garden, London WC2H 9JQ, UK &middot; Company No. 17063322</p>
+  <p style="margin-top:6px"><a href="mailto:info@cartaos.ai">info@cartaos.ai</a></p>
+</div></footer>
+
+<!-- Demo Modal -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modalForm">
+      <h3>Request a Demo</h3>
+      <p>See how Deal Twin can transform your dealmaking workflow.</p>
+      <div>
+        <label>Name</label>
+        <input type="text" id="demoName" placeholder="Your full name">
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" id="demoEmail" placeholder="you@company.com">
+      </div>
+      <div>
+        <label>Organisation</label>
+        <input type="text" id="demoOrg" placeholder="Your company or institution">
+      </div>
+      <button class="submit-btn" onclick="submitDemo()">Submit Request</button>
+    </div>
+    <div class="success-msg" id="modalSuccess">
+      <div class="check">&#10003;</div>
+      <h4>Thank you!</h4>
+      <p>We'll be in touch shortly to schedule your demo.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Modal */
+function openModal(){document.getElementById('demoModal').classList.add('active')}
+function closeModal(){
+  document.getElementById('demoModal').classList.remove('active');
+  document.getElementById('modalForm').style.display='block';
+  document.getElementById('modalSuccess').style.display='none';
+}
+function submitDemo(){
+  var n=document.getElementById('demoName').value;
+  var e=document.getElementById('demoEmail').value;
+  var o=document.getElementById('demoOrg').value;
+  if(!n||!e||!o){alert('Please fill in all fields.');return}
+  document.getElementById('modalForm').style.display='none';
+  document.getElementById('modalSuccess').style.display='block';
+}
+document.getElementById('demoModal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+
+/* Stakeholder Network — compact, 4 nodes */
+(function(){
+  var nodes = [
+    {label:"Biotech Startups",desc:"Discover therapies",icon:"\u2699",color:"#F59E0B",angle:0},
+    {label:"Pharma Companies",desc:"Develop & commercialize",icon:"\u2696",color:"#F97316",angle:90},
+    {label:"Universities",desc:"Generate early research",icon:"\u2606",color:"#A78BFA",angle:180},
+    {label:"CROs & CDMOs",desc:"Run trials & manufacturing",icon:"\u2638",color:"#2DD4BF",angle:270}
+  ];
+  var canvas = document.getElementById('networkCanvas');
+  var svg = document.getElementById('networkLines');
+  var cX = 50, cY = 50, radius = 38;
+  var lines = '';
+  var coords = [];
+  for(var i=0;i<nodes.length;i++){
+    var n = nodes[i];
+    var rad = (n.angle - 90) * Math.PI / 180;
+    var x = cX + radius * Math.cos(rad);
+    var y = cY + radius * Math.sin(rad);
+    coords.push({x:x,y:y});
+    // Lines from center
+    lines += '<line class="line-main" x1="50%" y1="50%" x2="'+x+'%" y2="'+y+'%" style="stroke:'+n.color+';opacity:.4"/>';
+    // Node
+    var nodeEl = document.createElement('div');
+    nodeEl.className = 'network-node';
+    nodeEl.style.left = x + '%';
+    nodeEl.style.top = y + '%';
+    nodeEl.style.transform = 'translate(-50%,-50%)';
+    nodeEl.innerHTML = '<div class="node-circle" style="border-color:'+n.color+';background:'+n.color+'18;color:'+n.color+'">'+n.icon+'</div><div class="node-label">'+n.label+'</div><div class="node-desc" style="color:'+n.color+'">'+n.desc+'</div>';
+    canvas.appendChild(nodeEl);
+  }
+  // All peer connections (6 lines for 4 nodes)
+  for(var i=0;i<coords.length;i++){
+    for(var j=i+1;j<coords.length;j++){
+      lines += '<line class="line-peer" x1="'+coords[i].x+'%" y1="'+coords[i].y+'%" x2="'+coords[j].x+'%" y2="'+coords[j].y+'%" style="stroke:'+nodes[i].color+';opacity:.12"/>';
+    }
+  }
+  svg.innerHTML = lines;
+})();
+
+/* Capabilities — Deal Twin sub-cards */
+var C=[
+  {id:"benchmark",name:"Deal Benchmarking",sub:"Market Context",color:"#F59E0B",icon:"\u25C9",
+   desc:"Understand how similar therapies have been partnered across the industry.",
+   detail:"CartaOS benchmarks upfront payments, milestone structures, royalty ranges, and partnership archetypes across the biotech ecosystem. Instead of manually searching through filings, agreements, and trial databases, CartaOS models how comparable therapies have been partnered \u2014 giving your team the market context that was previously available only to the largest pharmaceutical organizations."},
+  {id:"milestone",name:"Milestone & Probability Modeling",sub:"Risk Intelligence",color:"#A78BFA",icon:"\u25B3",
+   desc:"Connect clinical development data with historical deal structures.",
+   detail:"Drug development carries significant scientific uncertainty. CartaOS connects clinical development data with historical transaction structures to model probability of success across phases, how milestone payments align with development risk, and how regulatory outcomes influence deal economics. This transforms how teams evaluate risk during deal negotiations."},
+  {id:"partner",name:"Partner Discovery",sub:"Network Intelligence",color:"#F97316",icon:"\u2B21",
+   desc:"Identify organizations that have partnered on similar assets.",
+   detail:"CartaOS analyzes historical collaborations across the biotech ecosystem to identify organizations that have partnered on similar therapeutic areas, modalities, and development stages. This helps teams prioritize outreach and focus on the most relevant partners \u2014 replacing the guesswork of personal networks with data-driven intelligence."},
+  {id:"diligence",name:"Due Diligence Preparation",sub:"Deal Readiness",color:"#2DD4BF",icon:"\u25C6",
+   desc:"Prepare for pharmaceutical due diligence before negotiations begin.",
+   detail:"Pharmaceutical companies conduct extensive due diligence before partnerships or acquisitions. CartaOS helps teams prepare by identifying common diligence questions, required documentation, and information gaps before negotiations begin. The system can integrate with workflows such as Outlook to help teams organize diligence materials and arrive at the table fully prepared."}
+];
+var s=0;
+function r(){
+  var g=document.getElementById('capGrid'),h='';
+  for(var i=0;i<C.length;i++){var a=C[i],c=i===s;
+    h+='<div class="cap-card'+(c?' active':'')+'" onclick="p('+i+')" style="'+(c?'background:linear-gradient(135deg,'+a.color+'12,'+a.color+'06);border-color:'+a.color+';box-shadow:0 0 40px '+a.color+'25':'')+'">';
+    h+='<div class="cap-icon" style="color:'+a.color+'">'+a.icon+'</div>';
+    h+='<div class="cap-sub" style="color:'+a.color+'">'+a.sub+'</div>';
+    h+='<div class="cap-name">'+a.name+'</div>';
+    h+='<div class="cap-desc">'+a.desc+'</div></div>';}
+  g.innerHTML=h;
+  var a=C[s];
+  document.getElementById('capDetail').innerHTML='<div class="cap-detail" style="border-color:'+a.color+'30"><div class="cap-detail-header"><div class="cap-detail-icon" style="color:'+a.color+'">'+a.icon+'</div><div><div class="cap-detail-sub" style="color:'+a.color+'">'+a.sub+'</div><div class="cap-detail-name">'+a.name+'</div></div></div><div class="cap-detail-text">'+a.detail+'</div></div>';
+}
+function p(i){s=i;r()}
+r();
+</script>
+</body>
+</html>
